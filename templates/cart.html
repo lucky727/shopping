@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}cart{% endblock title %}
+{% block content %}
+<div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-4">Your Shopping Cart</h2>
+
+    {% if cart %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for item in cart %}
+                <div class="border p-4 rounded-lg shadow-md bg-white">
+                    <img src="{{ item.image }}" alt="{{ item.name }}" class="w-full h-40 object-cover mb-2 rounded">
+                    <h3 class="text-lg font-semibold">{{ item.name }}</h3>
+                    <p class="text-gray-600 text-sm">{{ item.description }}</p>
+                    <p class="text-green-600 font-bold mt-2">₹{{ item.price }}</p>
+                    <div class="flex items-center gap">
+                        <a href="{% url 'updateqty' item.id 'dec' %}" class="px-3 py-1 bg-red-500 text-white rounded-l">-</a>
+                        <span class="px-4 py-1 bg-gray-200">{{ item.qty }}</span>
+                        <a href="{% url 'updateqty' item.id 'inc' %}" class="px-3 py-1 bg-green-500 text-white rounded-r ">+</a>
+                    </div>
+            
+                    <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mt-2"><a href="{% url 'clear' item.id %}">remove</a></button>
+                </div>
+                
+            {% endfor %}
+            
+        </div>
+
+        <div class="mt-6">
+            <a href="{% url 'cartclear' 'ac' %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Clear Cart</a>
+        </div>
+    {% else %}
+        <p class="text-gray-500">Your cart is empty.</p>
+    {% endif %}
+</div>
+<div id="bill" class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md mx-auto">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Billing Details</h2>
+
+    <hr class="mb-4 border-gray-300">
+
+    {% for item in cart %}
+    <p class="flex justify-between text-gray-700 font-medium">
+        {{ item.name }} (x{{ item.qty }}) <span class="font-semibold">₹{{ item.price}} * {{ item.qty }}</span>
+    </p>
+    {% endfor %}
+
+    <hr class="my-4 border-gray-300">
+
+    <p class="flex justify-between text-gray-700 font-medium">
+        Total Price: <span class="font-semibold text-green">₹ {{totalprice}}</span>
+    </p>
+    <p class="flex justify-between text-gray-700 font-medium">
+        Taxes (18% GST): <span class="font-semibold">₹{{taxprice}}</span>
+    </p>
+
+    <hr class="my-4 border-gray-300">
+
+    <p class="flex justify-between text-lg font-bold text-gray-900">
+        Final Price to Pay: <span class="text-red-600">₹{{finalprice}}</span>
+    </p>
+
+    <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+        <a href="">Proceed to Payment</a>
+    </button>
+</div>
+{% endblock content %}
