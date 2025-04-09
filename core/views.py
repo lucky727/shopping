@@ -1,5 +1,9 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from core.models import *
+import razorpay
+from django.conf import settings
+
+
 
 # Create your views here.
 def homepage(req):
@@ -63,4 +67,35 @@ def updateqty(req, action, product_id):
             break
     req.session['cart']=cart
     return redirect("viewcart")
+
+
+
+
+def initiate_payment(request,amount):
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+    order_amount = amount*100 # Amount in paisa (₹500.00)
+    order_currency = 'INR'
+    
+    # 🔹 Razorpay Order Create Karna
+    payment_order = client.order.create({
+        'amount': order_amount,
+        'currency': order_currency,
+        'payment_capture': '1'
+    })
+
+    # 🔹 Order ID Session Me Store Karna
+    request.session['order_id'] = payment_order['id']
+
+    return render(request, 'payment.html', {
+        'api_key': settings.RAZORPAY_KEY_ID,
+        'order_id': payment_order['id'],
+        'amount': order_amount // 100  # Convert to Rupees
+    })
+
+
+
+from django.http import HttpResponse
+
+def payment_success(request):
+    return render(request,"payments_success.html")
 

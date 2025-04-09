@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import razorpay
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -140,3 +140,5 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 86400  # Session expires in 1 day
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # False = Session persists even after closing browser
 
+RAZORPAY_KEY_ID = "rzp_test_GAjeU18GdtbnzH"
+RAZORPAY_KEY_SECRET = "q27F4Y0YSsHRF65UvrYFzjXp"

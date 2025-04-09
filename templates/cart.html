@@ -59,7 +59,7 @@
     </p>
 
     <button class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-        <a href="">Proceed to Payment</a>
+        <a href="{% url 'initiate_payment' finalprice|floatformat:0  %}">Proceed to Payment</a>
     </button>
 </div>
 {% endblock content %}

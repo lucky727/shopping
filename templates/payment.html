@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}payment{% endblock title %}
+{% block content %}
+<form action="{% url 'payment_success' %}" method="POST">
+    {% csrf_token %}
+    <script 
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        data-key="{{ api_key }}"
+        data-amount="{{ amount }}00"
+        data-currency="INR"
+        data-order_id="{{ order_id }}"
+        data-buttontext="Pay Now"
+        data-name="MyShop"
+        data-description="Complete your payment"
+        data-theme.color="#F37254">
+    </script>
+</form>
+
+{% endblock content %}
